@@ -1,2 +1,5 @@
 can use force remove
 git rm --cached whisper.cpp -f
+
+can remove origin:
+git remote remove origin

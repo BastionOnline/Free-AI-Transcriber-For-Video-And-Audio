@@ -1,18 +1,35 @@
 param(
-    # -Path $wavPath -Name $wavName -Type $wavFileExtension
-    [string]$Path,
-    [string]$Name,
-    [string]$Type
+
+    [System.IO.FileInfo]$AudioFile
 )
+
+$TimeStamp = Get-Date -Format "yyyy-MM-dd H-mm-ss tt"
+
+$wavPath = $AudioFile.FullName
+$wavNameAndExt = $AudioFile.Name
+$wavName = $AudioFile.BaseName
+
+Write-Host "Audio Path: $wavPath"
+Write-Host "Audio Name and Type: $wavNameAndExt"
+Write-Host "Audio Name: $wavName"
+
 
 $WhisperExe = ".\1. bin\whisper-cli.exe"
 $ModelFile = ".\2. models\ggml-base.en.bin"
-# $((Split-Path $InputFile -LeafBase).txt) → MLKDream.txt
-# leafbase = filename without extension
-# split-path = full path broken into parts
-$OutputDir = ".\4. output\$Name.txt"
+$OutputDir = ".\4. Output\$wavName - Transcribed $TimeStamp"
 
-Write-Host "Transcribing file: $Type"
+Write-Host "Transcribing file: $wavNameAndExt"
 # run whisper-cli or ffmpeg here with $InputFile
-# ".\1. bin\whisper-cli.exe" -m ".\2. models\ggml-base.en.bin" -f ".\3. Input\MLKDream.wav" -otxt -of ".\3. Input\MLKDream"
-& $WhisperExe -m $ModelFile -f $Path -otxt -of $OutputDir
+& $WhisperExe -m $ModelFile -f $wavPath -otxt -of $OutputDir
+
+# Prepend the timestamp line
+$GitHubLink = "https://github.com/BastionOnline/AI-Transcriber---Whisper-in-C"
+
+# Create a single clean header line
+$HeaderLine = "Transcribed: $TimeStamp  |  Transcription Service From: $GitHubLink`r`n`r`n"
+
+# Read transcription content
+$Content = Get-Content "$OutputDir.txt"
+
+# Write header + content to the same file
+Set-Content "$OutputDir.txt" ($HeaderLine + ($Content -join "`r`n"))

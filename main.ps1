@@ -1,39 +1,51 @@
 # run with .\main.ps1
 Write-Output "=== Whisper Portable Transcriber ==="
 
-# 1. Find a WAV file using find-wav.ps1
-    # & is the call operator in PowerShell. It runs another script, command, or program.
-    # ".\find-wav.ps1" points to the script file inside the same folder (scripts\).
-    # $InputFile captures the output of that script.
+# Check if dirs exist first, if not make them
+    # Create folders if not made
+
+
+# recieve python arguments to see what user wants to do
+    # video: true or false
+    # Audio: true or false
+    # 
+
+
+# If video, make sure ffmpeg exists
+    # guide to URL to download ffmpeg
+    # show upload button which gets local path of download and copies to .\bin\
+    # check if .\bin\ffmpeg.exe exists
+
+# If audio, make sure input dir exists
+    # and whisper-cli.exe exist
+
+
+# checks if .bin model file exists in .\2. models\
+    # if not, guide to URL to download model
+    # show upload button which gets local path of download and copies to .\2. models\
+
+
+
+# Find a WAV file using find-wav.ps1
 $wavFileObj = & ".\find-wav.ps1"
+# & is the call operator in PowerShell. It runs another script, command, or program.
+# ".\find-wav.ps1" points to the script file inside the same folder (scripts\).
 
-    # If $InputFile is empty (meaning no .wav file was found), the script prints an error and stops execution with exit 1.
-    # This prevents calling the transcriber with no input.
 
-if (-not $InputFile) {
-    Write-Error "Stopping: no input file found."
-    exit 1
-}
+$wavFileObj.GetType()
 
 # If a file was found, pass it to transcribe.ps1
 if ($wavFileObj) {
-    & "$PSScriptRoot\transcribe.ps1" -InputFile $wavFileObj
+    Write-Output "Found input file: $wavFileObj"
+
+    # Pass a named parameter (or argument) into transcribe.ps1, 
+    # -AudioFile → parameter name in the script being called.
+    # $wavFileObj → the value being passed to that parameter.
+    & "$PSScriptRoot\transcribe.ps1" -AudioFile $wavFileObj
 } else {
     # No file found, notify the user
-    Write-Host "No WAV files found in the input folder. Please add a file and try again." -ForegroundColor Yellow
+    Write-Output "No WAV files found in the input folder. Please add a file and try again."
+    exit 1
 }
-
-
-Write-Output "Found input file: $InputFile"
-
-# 2. Pass it into transcribe.ps1
-
-# Runs transcribe.ps1.
-# -InputFile $InputFile passes the found .wav file path as a parameter into that script.
-# Inside transcribe.ps1, it uses $InputFile to tell whisper-cli.exe which file to process.
-# So effectively:
-# 👉 "Now run the transcription script, giving it the .wav file path we just found."
-
-& ".\transcribe.ps1" -InputFile $InputFile
 
 Write-Output "=== Done ==="
