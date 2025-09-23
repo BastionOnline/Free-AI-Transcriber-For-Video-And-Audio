@@ -1,0 +1,10 @@
+*.code-workspace
+\drafts
+\models
+\installations
+\whisper.cpp
+\1. bin
+\2. models
+\3. Input
+\4. Output
+\requirements

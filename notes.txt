@@ -1,0 +1,2 @@
+can use force remove
+git rm --cached whisper.cpp -f
