@@ -23,7 +23,7 @@ Write-Host "Transcribing file: $wavNameAndExt"
 & $WhisperExe -m $ModelFile -f $wavPath -otxt -of $OutputDir
 
 # Prepend the timestamp line
-$GitHubLink = "https://github.com/BastionOnline/AI-Transcriber---Whisper-in-C"
+$GitHubLink = "https://github.com/BastionOnline/Free-AI-Transcriber-For-Video-And-Audio"
 
 # Create a single clean header line
 $HeaderLine = "Transcribed: $TimeStamp  |  Transcription Service From: $GitHubLink`r`n`r`n"

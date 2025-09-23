@@ -4,6 +4,7 @@ Write-Output "=== Whisper Portable Transcriber ==="
 # Check if dirs exist first, if not make them
     # Create folders if not made
 
+# Load user defaults
 
 # recieve python arguments to see what user wants to do
     # video: true or false

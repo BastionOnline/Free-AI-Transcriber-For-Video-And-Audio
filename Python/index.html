@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--use on live server  -->
+    <!-- <link rel="stylesheet" href="/Python/assets/style.css" type="text/css"> -->
+    
+    <!-- use in venv  -->
+    <link rel="stylesheet" href="./assets/style.css" type="text/css">
+
+    <title>Media Transcriber</title>
+</head>
+<body>
+    <h1>Media Transcriber</h1>
+    <label for="mediaInput" id="mediaLabel">Select Media</label>
+    <input type="file" id="mediaInput" accept="video/*, audio/*"/>
+
+    <!-- <label for="modelInput">Select Model</label>
+    <input type="file" id="modelInput"/> -->
+
+    <!-- <label for="transcriptOutput">Select where to save transcript</label>
+    <input type="file" id="transcriptOutput" webkitdirectory directory/> -->
+
+    <button id="mediaFileInput">Choose your File</button>
+    <button id="transcribeBtn">Transcribe</button>
+    <p id="status"></p>
+    <!-- use on live server -->
+    <!-- <script src="./assets/script.js"></script> -->
+    
+    <!--  use on venv  -->
+    <script src="./assets/script.js"></script>
+
+</body>
+</html>
