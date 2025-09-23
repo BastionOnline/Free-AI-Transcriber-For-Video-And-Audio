@@ -5,7 +5,7 @@ Write-Output "=== Whisper Portable Transcriber ==="
     # & is the call operator in PowerShell. It runs another script, command, or program.
     # ".\find-wav.ps1" points to the script file inside the same folder (scripts\).
     # $InputFile captures the output of that script.
-$InputFile = & ".\find-wav.ps1"
+$wavFileObj = & ".\find-wav.ps1"
 
     # If $InputFile is empty (meaning no .wav file was found), the script prints an error and stops execution with exit 1.
     # This prevents calling the transcriber with no input.
@@ -14,6 +14,15 @@ if (-not $InputFile) {
     Write-Error "Stopping: no input file found."
     exit 1
 }
+
+# If a file was found, pass it to transcribe.ps1
+if ($wavFileObj) {
+    & "$PSScriptRoot\transcribe.ps1" -InputFile $wavFileObj
+} else {
+    # No file found, notify the user
+    Write-Host "No WAV files found in the input folder. Please add a file and try again." -ForegroundColor Yellow
+}
+
 
 Write-Output "Found input file: $InputFile"
 
