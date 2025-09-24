@@ -2,20 +2,20 @@
 
 param(
 
-    [string]$wavFileObj = ""  # Default value for the parameter
+    [string]$mediaFileObj = "",
+    [string]$mediaType  # Default value for the parameter
 )
 
-Write-Output "=== Whisper Portable Transcriber ==="
+Write-Host "=== Whisper Portable Transcriber ==="
+
+# Load user defaults
+    # check if .\user-defaults.json exists
+    # if not, create with default values
+    # if yes, load values into variables
+
 
 # Check if dirs exist first, if not make them
     # Create folders if not made
-
-# Load user defaults
-
-# recieve python arguments to see what user wants to do
-    # video: true or false
-    # Audio: true or false
-    # 
 
 
 # If video, make sure ffmpeg exists
@@ -31,36 +31,31 @@ Write-Output "=== Whisper Portable Transcriber ==="
     # if not, guide to URL to download model
     # show upload button which gets local path of download and copies to .\2. models\
 
+$TimeStamp = Get-Date -Format "MMM d, yyyy h-mm-ss tt"
+
+Write-Host "Media file argument: $mediaFileObj"
+Write-Host "Media type argument: $mediaType"
 
 
-
-if ($wavFileObj == "") {
-    # Find a WAV file using find-wav.ps1
-    $wavFileObj = & ".\find-wav.ps1"
+# Prep media if needed
+if ($mediaType -eq "video") {
+    Write-Host "Video File Found: $mediaFileObj"
+    $mediaFileObj = & ".\convert-video.ps1" -VideoFile $mediaFileObj -TimeStamp $TimeStamp
+    # $mediaFileObj = & ".\find-wav.ps1"
     # & is the call operator in PowerShell. It runs another script, command, or program.
-    # ".\find-wav.ps1" points to the script file inside the same folder (scripts\).
-    $wavFileObj.GetType()
-
+    $mediaFileObj.GetType()
+    Write-Host "Converted file: $mediaFileObj"
 } else {
-    Write-Output "WAV file argument provided: $wavFileObj"
+    Write-Host "Audio File Found: $mediaFileObj"
 }
 
 
+# Transcribe the media file
+Write-Host "Found input file: $mediaFileObj"
+& "$PSScriptRoot\transcribe.ps1" -AudioFile $mediaFileObj -TimeStamp $TimeStamp
+# Pass a named parameter (or argument) into transcribe.ps1, 
+# -AudioFile → parameter name in the script being called.
+# $wavFileObj → the value being passed to that parameter.
 
 
-
-# If a file was found, pass it to transcribe.ps1
-if ($wavFileObj) {
-    Write-Output "Found input file: $wavFileObj"
-
-    # Pass a named parameter (or argument) into transcribe.ps1, 
-    # -AudioFile → parameter name in the script being called.
-    # $wavFileObj → the value being passed to that parameter.
-    & "$PSScriptRoot\transcribe.ps1" -AudioFile $wavFileObj
-} else {
-    # No file found, notify the user
-    Write-Output "No WAV files found in the input folder. Please add a file and try again."
-    exit 1
-}
-
-Write-Output "=== Done ==="
+Write-Host "=== Done ==="

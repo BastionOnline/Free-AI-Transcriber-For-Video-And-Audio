@@ -1,10 +1,9 @@
 param(
 
-    [System.IO.FileInfo]$AudioFile
+    [System.IO.FileInfo]$AudioFile,
+    [string]$TimeStamp
 )
 
-# $TimeStamp = Get-Date -Format "yyyy-MM-dd h-mm-ss tt"
-$TimeStamp = Get-Date -Format "MMM d, yyyy h-mm-ss tt"
 
 $wavPath = $AudioFile.FullName
 $wavNameAndExt = $AudioFile.Name
@@ -24,10 +23,11 @@ Write-Host "Transcribing file: $wavNameAndExt"
 & $WhisperExe -m $ModelFile -f $wavPath -otxt -of $OutputDir
 
 # Prepend the timestamp line
-$GitHubLink = "https://github.com/BastionOnline/Free-AI-Transcriber-For-Video-And-Audio"
+# $GitHubLink = "https://github.com/BastionOnline/Free-AI-Transcriber-For-Video-And-Audio"
+$GitHubLink = "https://github.com/BastionOnline/"
 
 # Create a single clean header line
-$HeaderLine = "Transcription Service From: $GitHubLink`r`n`r`n"
+$HeaderLine = "For more FREE productivity tools, visit: $GitHubLink`r`n`r`n"
 
 # Read transcription content
 $Content = Get-Content "$OutputDir.txt"

@@ -3,7 +3,7 @@ import os
 import sys
 import subprocess
 from tkinter import filedialog
-
+import mimetypes
 
 # import loadUserDefaults
 
@@ -36,7 +36,16 @@ from tkinter import filedialog
 
 
 
-
+def check_media_type(file_path):
+    mime_type, _ = mimetypes.guess_type(file_path)
+    if mime_type:
+        if mime_type.startswith("audio"):
+            print("audio file")
+            return "audio"
+        elif mime_type.startswith("video"):
+            print("video file")
+            return "video"
+    return "unknown"
 
 
 # file_path = ''
@@ -49,6 +58,10 @@ class Api:
             filetypes=[("Audio/Video Files", "*.wav *.mp4 *.mkv *.mp3")]
         )
         print(self.file_path)
+
+        self.type = check_media_type(self.file_path)
+        print(self.type)
+
         return self.file_path
 
     def transcribe_file(self, name, data):
@@ -75,11 +88,16 @@ class Api:
         # cmd = [r".\1. bin\whisper-cli.exe", "-m", r".\2. models\ggml-base.en.bin", "-f", r".\3. Input\2025-08-23-19-43-36.wav", "-otxt" ]  # Example command, replace with actual command
 
         # PowerShell command to run a script
+        print(f"passing ${self.file_path} to PowerShell script")
+        print(f"media type: {self.type}")
+        
         cmd = [
             "powershell",   # or "pwsh" if using PowerShell Core
             "-ExecutionPolicy", "Bypass",  # allow script to run
             "-File",
-            r".\main.ps1", "-wavFileObj", self.file_path  # path to your script
+            r".\main.ps1",
+            "-mediaFileObj", self.file_path,  # path to your script
+            "-mediaType", self.type
         ]
         # cmd = [r".\main.ps1"]
 
