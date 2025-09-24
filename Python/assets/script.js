@@ -3,6 +3,45 @@ document.addEventListener("DOMContentLoaded", () => {
     const transcribe = document.getElementById("transcribeBtn");
     const status = document.getElementById("status");
 
+    function random(min, max, c, numberSwitch, element, elementLength) {
+        // numberSwitch.innerHTML = rnd;
+        var rnd = Math.floor(Math.random() * (max - min + 1)) + min
+        // numberSwitch.innerHTML = element.slice(0, c + 1) + rnd;
+        if (c === elementLength) {
+            numberSwitch.innerHTML = `${element.slice(0, c)}`;
+        } else{
+            numberSwitch.innerHTML = `${element.slice(0, c)}${rnd}`;
+        }
+        
+
+        console.log(rnd);    
+        return numberSwitch.innerHTML;
+    }
+
+    function animateTitle(elementId) {
+        const numberSwitch = document.getElementById(elementId)
+        const element = document.getElementById(elementId).innerHTML;
+        const elementLength = element.length
+        console.log(element)
+        console.log(elementLength)
+
+        // var rnd;
+
+        for (let c = 0; c <= elementLength; c++) {
+            setTimeout(function() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(function() {
+                    // var rnd = random(1,10);
+                    random(1, 9, c, numberSwitch, element, elementLength);
+                }, i * 80);
+            }
+            // console.log(element.slice(0, i));
+        }, c * 60)
+        }}
+
+    animateTitle("title");
+    // document.addEventListener("DOMContentLoaded", (event) => {animateTitle("wordId")});
+
     // viewpath.addEventListener("click", async () => {   
     //     const result = await window.pywebview.api.print_file_path();
     //     // alert(result);

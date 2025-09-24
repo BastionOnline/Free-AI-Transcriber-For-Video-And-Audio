@@ -3,3 +3,6 @@ git rm --cached whisper.cpp -f
 
 can remove origin:
 git remote remove origin
+
+if repo name changes:
+git remote set-url origin https://github.com/BastionOnline/Free-AI-Transcriber-For-Video-And-Audio.git
