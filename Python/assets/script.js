@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     const mediaFileInput = document.getElementById("mediaFileInput");
     const transcribe = document.getElementById("transcribeBtn");
