@@ -1,4 +1,10 @@
 # run with .\main.ps1
+
+param(
+
+    [string]$wavFileObj = ""  # Default value for the parameter
+)
+
 Write-Output "=== Whisper Portable Transcriber ==="
 
 # Check if dirs exist first, if not make them
@@ -27,13 +33,21 @@ Write-Output "=== Whisper Portable Transcriber ==="
 
 
 
-# Find a WAV file using find-wav.ps1
-$wavFileObj = & ".\find-wav.ps1"
-# & is the call operator in PowerShell. It runs another script, command, or program.
-# ".\find-wav.ps1" points to the script file inside the same folder (scripts\).
+
+if ($wavFileObj == "") {
+    # Find a WAV file using find-wav.ps1
+    $wavFileObj = & ".\find-wav.ps1"
+    # & is the call operator in PowerShell. It runs another script, command, or program.
+    # ".\find-wav.ps1" points to the script file inside the same folder (scripts\).
+    $wavFileObj.GetType()
+
+} else {
+    Write-Output "WAV file argument provided: $wavFileObj"
+}
 
 
-$wavFileObj.GetType()
+
+
 
 # If a file was found, pass it to transcribe.ps1
 if ($wavFileObj) {

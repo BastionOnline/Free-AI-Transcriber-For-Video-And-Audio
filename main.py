@@ -4,11 +4,6 @@ import sys
 import subprocess
 from tkinter import filedialog
 
-def selectFile():
-    file_path = filedialog.askopenfilename(
-        title="Choose a media file",
-        filetypes=[("Audio/Video Files", "*.wav *.mp4 *.mkv")]
-    )
 
 # import loadUserDefaults
 
@@ -42,31 +37,19 @@ def selectFile():
 
 
 
-def transcribe(audio_file_path):
-    # Build the command
-    cmd = ['path/to/whisper-cli.exe', audio_file_path]
 
-    # Run the command and capture output
-    result = subprocess.run(cmd, capture_output=True, text=True)
 
-    # Check if the command was successful
-    if result.returncode == 0:
-        # Output will be in result.stdout
-        transcription = result.stdout
-        return transcription
-    else:
-        # Something went wrong, print the error
-        print("Error:", result.stderr)
-        return None
+# file_path = ''
+
 
 class Api:
     def selectFile(self):
-        file_path = filedialog.askopenfilename(
+        self.file_path = filedialog.askopenfilename(
             title="Choose a media file",
-            filetypes=[("Audio/Video Files", "*.wav *.mp4 *.mkv")]
+            filetypes=[("Audio/Video Files", "*.wav *.mp4 *.mkv *.mp3")]
         )
-        print(file_path)
-        return file_path
+        print(self.file_path)
+        return self.file_path
 
     def transcribe_file(self, name, data):
         print("✅ Transcription requested for:", name)
@@ -75,6 +58,46 @@ class Api:
         #     print("Transcription:", transcription)
         # else:
         #     print("Transcription failed.")
+
+    def print_file_path(self):
+        print(self.file_path)
+        return self.file_path
+
+
+    def transcribe(self):
+        # Build the command
+        # cmd = ['path/to/whisper-cli.exe', audio_file_path]
+
+        # cmd = [self.file_path,  capture_output=True, text=True]
+        # cmd = ["echo", "Hello, World!"]  # Example command, replace with actual command
+
+        # good example of reg cmd
+        # cmd = [r".\1. bin\whisper-cli.exe", "-m", r".\2. models\ggml-base.en.bin", "-f", r".\3. Input\2025-08-23-19-43-36.wav", "-otxt" ]  # Example command, replace with actual command
+
+        # PowerShell command to run a script
+        cmd = [
+            "powershell",   # or "pwsh" if using PowerShell Core
+            "-ExecutionPolicy", "Bypass",  # allow script to run
+            "-File",
+            r".\main.ps1", "-wavFileObj", self.file_path  # path to your script
+        ]
+        # cmd = [r".\main.ps1"]
+
+
+        # Run the command and capture output
+        result = subprocess.run(cmd, capture_output=True, text=True)
+
+        # Check if the command was successful
+        if result.returncode == 0:
+            # Output will be in result.stdout
+            transcription = result.stdout
+            print("transcript completed")
+            return transcription
+        else:
+            # Something went wrong, print the error
+            print("Error:", result.stderr)
+            return None
+
 
 def resource_path(relative_path):
     """ Get the absolute path to a resource, works for dev and for PyInstaller """
@@ -98,7 +121,7 @@ if __name__ == '__main__':
     webview.start()
 
 # Example usage
-audio_path = 'your_audio_file.wav'
-transcription = transcribe(audio_path)
-if transcription:
-    print("Transcription:", transcription)
+# audio_path = 'your_audio_file.wav'
+# transcription = transcribe(audio_path)
+# if transcription:
+#     print("Transcription:", transcription)

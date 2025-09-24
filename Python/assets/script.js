@@ -1,29 +1,48 @@
-// alert("loaded!")
 
 document.addEventListener("DOMContentLoaded", () => {
-    const mediaInput = document.getElementById("mediaInput");
-    const transcribeBtn = document.getElementById("transcribeBtn");
-    const status = document.getElementById("status");
+    // alert("loaded!")
+
+    // const mediaInput = document.getElementById("mediaInput");
     const mediaFileInput = document.getElementById("mediaFileInput");
-    
+    const transcribe = document.getElementById("transcribeBtn");
+    const status = document.getElementById("status");
+    // const viewpath = document.getElementById("viewpath");
+
+    // viewpath.addEventListener("click", async () => {   
+    //     const result = await window.pywebview.api.print_file_path();
+    //     // alert(result);
+    // });
+
+    // mediaFileInput.addEventListener("click", () => {
+    //     alert("clicked")})
+
 
     mediaFileInput.addEventListener("click", async () => {
         try {
             // alert("clicked")
-            const filePath = await window.pywebview.api.selectFile();
-            console.log(filePath)
+            const mediafilePath = await window.pywebview.api.selectFile();
+            console.log(mediafilePath)
             
-            if (!filePath) {
+            if (!mediafilePath) {
                 status.textContent = "⚠️ No file selected.";
             } else {
-                status.textContent = `✅ Selected file: ${filePath}`;
-                console.log("File selected:", filePath);
+                status.textContent = `✅ Selected file: ${mediafilePath}`;
+                console.log("File selected:", mediafilePath);
                 // You can now pass filePath to your transcription function
             }
         } catch (err) {
             alert("File selection failed:", err);
             // status.textContent = "❌ File selection failed.";
         }})
+
+    transcribe.addEventListener("click", async () => {
+        status.textContent = "⏳ Transcription started... this may take a few minutes.";
+
+        const result = await window.pywebview.api.transcribe();
+        status.textContent = "✅ Done in"
+
+        alert('Transcript Completed');
+    })
 
     transcribeBtn.addEventListener("click", () => {
         const mediaFile = mediaInput.files[0];
