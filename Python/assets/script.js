@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         status.textContent = "⏳ Transcription started... this may take a few minutes.";
 
         const result = await window.pywebview.api.transcribe();
-        status.textContent = "✅ Done in"
+        status.textContent = "✅ Transcript completed"
 
         alert('Transcript Completed');
     })
