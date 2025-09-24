@@ -6,9 +6,13 @@ param (
 Write-Host $videoFile
 
 $videoName = [System.IO.Path]::GetFileNameWithoutExtension($videoFile)
-Write-Host $videoName
+$videoPath = Split-Path -Path $videoFile -Parent
+# $fileInfoObject = Get-Item $filePathString # This creates a System.IO.FileInfo object
 
-$convertedFile = ".\3. Input\$videoName.wav"
+Write-Host $videoName
+Write-Host $videoPath
+
+$convertedFile = "$videoPath\$videoName.wav"
 
 Write-Host $convertedFile
 # & ".\bin\ffmpeg.exe" -i ".\3. Input\lecture1.mkv" -ar 16000 -ac 1 ".\3. Input\lecture1.wav"
@@ -16,4 +20,10 @@ Write-Host $convertedFile
 Write-Host "Converting video file to WAV"
 & ffmpeg -i "$videoFile" -ar 16000 -ac 1 $convertedFile
 
-$convertedFile
+Write-Host $convertedFile.GetType()
+
+$convertedFileInfoObject = Get-Item $convertedFile # This creates a System.IO.FileInfo object
+
+Write-Host $convertedFileInfoObject.GetType()
+
+$convertedFileInfoObject

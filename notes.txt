@@ -6,3 +6,36 @@ git remote remove origin
 
 if repo name changes:
 git remote set-url origin https://github.com/BastionOnline/Free-AI-Transcriber-For-Video-And-Audio.git
+
+pyinstaller --noconsole --onedir --name "Stable App" --add-data "index.html;." --add-data "assets;assets" main3.py
+
+pyinstaller --noconsole --onedir --name "Stable App" --add-data "index.html;.\Python\" --add-data "assets;assets" main.py
+
+
+project/
+│
+├─ python/
+│   ├─ assets/
+│   │   ├─ style.css
+│   │   └─ script.js
+│   │
+│   └─ index.html
+│
+├─ Powershell/
+│   └─ files and folders here
+│
+└─ main.py
+
+
+pyinstaller --noconsole --onedir --name "Stable App" \
+    --hidden-import=webview \
+    --add-data "python/index.html;." \
+    --add-data "python/assets;assets" \
+    main.py
+pyinstaller --noconsole --onedir --name "Stable App" \
+    --add-data "python/index.html;." \
+    --add-data "python/assets;assets" \
+    main.py
+
+
+pyinstaller --noconsole --onedir --name "Stable App" --hidden-import=webview --add-data "python/index.html;." --add-data "python/assets;assets" main.py

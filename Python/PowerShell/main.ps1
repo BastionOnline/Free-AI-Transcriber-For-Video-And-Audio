@@ -4,7 +4,14 @@ param(
 
     [string]$mediaFileObj = "",
     [string]$mediaType  # Default value for the parameter
+
+    # testing
+    # [string]$mediaFileObj = "..\..\3. Input\2025-08-23 19-43-36.mkv",
+    # [string]$mediaType = "video"
 )
+
+# .\main.ps1 -mediaFileObj '..\..\3. Input\2025-08-23 19-43-36.mkv' -mediaType 'video'
+
 
 Write-Host "=== Whisper Portable Transcriber ==="
 
@@ -40,7 +47,7 @@ Write-Host "Media type argument: $mediaType"
 # Prep media if needed
 if ($mediaType -eq "video") {
     Write-Host "Video File Found: $mediaFileObj"
-    $mediaFileObj = & ".\convert-video.ps1" -VideoFile $mediaFileObj -TimeStamp $TimeStamp
+    $mediaFileObj = & ".\convertVideo.ps1" -VideoFile $mediaFileObj -TimeStamp $TimeStamp
     # $mediaFileObj = & ".\find-wav.ps1"
     # & is the call operator in PowerShell. It runs another script, command, or program.
     $mediaFileObj.GetType()

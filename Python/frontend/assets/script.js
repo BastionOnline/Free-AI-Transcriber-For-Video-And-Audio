@@ -40,6 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }}
 
     animateTitle("title");
+
+    function timer(elapsedTime, response) {
+        var timer = document.getElementById("timer").innerHTML;
+        
+    }
+
     // document.addEventListener("DOMContentLoaded", (event) => {animateTitle("wordId")});
 
     // viewpath.addEventListener("click", async () => {   
