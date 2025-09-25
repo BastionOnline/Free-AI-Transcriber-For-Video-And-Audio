@@ -1,12 +1,13 @@
 param (
     [string]$videoFile,
-    [string]$TimeStamp
+    [string]$videoPath
+    # [string]$TimeStamp
 )
 
 Write-Host $videoFile
 
 $videoName = [System.IO.Path]::GetFileNameWithoutExtension($videoFile)
-$videoPath = Split-Path -Path $videoFile -Parent
+# $videoPath = Split-Path -Path $videoFile -Parent
 # $fileInfoObject = Get-Item $filePathString # This creates a System.IO.FileInfo object
 
 Write-Host $videoName

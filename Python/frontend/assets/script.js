@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const transcribe = document.getElementById("transcribeBtn");
     const status = document.getElementById("status");
 
+
+    function loadPresets() {}
+
+
+
     function random(min, max, c, numberSwitch, element, elementLength) {
         // numberSwitch.innerHTML = rnd;
         var rnd = Math.floor(Math.random() * (max - min + 1)) + min
@@ -45,6 +50,10 @@ document.addEventListener("DOMContentLoaded", () => {
         var timer = document.getElementById("timer").innerHTML;
         
     }
+
+
+
+
 
     // document.addEventListener("DOMContentLoaded", (event) => {animateTitle("wordId")});
 

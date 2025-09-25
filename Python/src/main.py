@@ -1,3 +1,4 @@
+import json
 import webview
 import os
 import sys
@@ -31,7 +32,52 @@ import mimetypes
 # if not, create blank
 # request user to set defaults
 # update user defaults file
-    
+
+cwd = os.getcwd()
+print(cwd)
+print(os.path.basename(cwd))
+
+binPath = os.path.join(cwd, "1. bin")
+whisperPath = os.path.join(binPath, "whisper-cli.exe")
+
+print(whisperPath)
+
+
+jsonPath = "./userDefaults.json"
+
+def defaultCheck(jsonValue, userDefaults):
+    if jsonValue not in userDefaults or not userDefaults[jsonValue]:
+        print(f"set ${jsonValue}")
+        return f"set ${jsonValue}"
+    else:
+        print(userDefaults[jsonValue])
+
+
+
+def loadUserDefaults():
+    try:
+        if os.path.exists(jsonPath):
+            with open(jsonPath, "r") as f:
+                userDefaults = json.load(f)
+
+            defaultCheck("whisper", userDefaults)
+            defaultCheck("model", userDefaults)
+
+        else:
+            with open(jsonPath, "w") as f:
+                json.dump({
+                    "whisper": whisperPath,
+                    "model": ""
+            #         # "input_folder": "",
+            #         # "output_folder": ""
+                },f)
+            return None
+    except json.JSONDecodeError as e:
+        print(e)
+        
+        
+
+loadUserDefaults()
 
 
 # recieve python arguments to see what user wants to do
@@ -125,11 +171,14 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
+html_file = resource_path("index.html")
+css_file = resource_path("assets/style.css")
+js_file = resource_path("assets/script.js")
 
 
-html_file = resource_path(r'..\frontend\index.html')
-css_file = resource_path(r'..\frontend\assets\style.css')
-js_file = resource_path(r'..\frontend\assets\script.js')
+# html_file = resource_path(r'..\frontend\index.html')
+# css_file = resource_path(r'..\frontend\assets\style.css')
+# js_file = resource_path(r'..\frontend\assets\script.js')
 
 
 if __name__ == '__main__':

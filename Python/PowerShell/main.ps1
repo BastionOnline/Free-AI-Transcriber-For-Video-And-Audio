@@ -3,12 +3,16 @@
 param(
 
     [string]$mediaFileObj = "",
-    [string]$mediaType  # Default value for the parameter
-
+    [string]$mediaType,  # Default value for the parameter
+    [string]$whisperExe,
+    [string]$modelFile
     # testing
     # [string]$mediaFileObj = "..\..\3. Input\2025-08-23 19-43-36.mkv",
     # [string]$mediaType = "video"
 )
+
+# $WhisperExe = "..\..\1. bin\whisper-cli.exe"
+# $ModelFile = "..\..\2. models\ggml-base.en.bin"
 
 # .\main.ps1 -mediaFileObj '..\..\3. Input\2025-08-23 19-43-36.mkv' -mediaType 'video'
 
@@ -38,16 +42,17 @@ Write-Host "=== Whisper Portable Transcriber ==="
     # if not, guide to URL to download model
     # show upload button which gets local path of download and copies to .\2. models\
 
-$TimeStamp = Get-Date -Format "MMM d, yyyy h-mm-ss tt"
+$timeStamp = Get-Date -Format "MMM d, yyyy h-mm-ss tt"
 
 Write-Host "Media file argument: $mediaFileObj"
 Write-Host "Media type argument: $mediaType"
 
+$mediaPathOnly = Split-Path -Path $mediaFileObj -Parent
 
 # Prep media if needed
 if ($mediaType -eq "video") {
     Write-Host "Video File Found: $mediaFileObj"
-    $mediaFileObj = & ".\convertVideo.ps1" -VideoFile $mediaFileObj -TimeStamp $TimeStamp
+    $mediaFileObj = & ".\convertVideo.ps1" -videoFile $mediaFileObj -videoPath $mediaPathOnly
     # $mediaFileObj = & ".\find-wav.ps1"
     # & is the call operator in PowerShell. It runs another script, command, or program.
     $mediaFileObj.GetType()
@@ -59,7 +64,7 @@ if ($mediaType -eq "video") {
 
 # Transcribe the media file
 Write-Host "Found input file: $mediaFileObj"
-& "$PSScriptRoot\transcribe.ps1" -AudioFile $mediaFileObj -TimeStamp $TimeStamp
+& "$PSScriptRoot\transcribe.ps1" -audioFile $mediaFileObj -timeStamp $timeStamp -mediaPathOnly $mediaPathOnly -modelFile $modelFile -whisperExe $whisperExe
 # Pass a named parameter (or argument) into transcribe.ps1, 
 # -AudioFile → parameter name in the script being called.
 # $wavFileObj → the value being passed to that parameter.
