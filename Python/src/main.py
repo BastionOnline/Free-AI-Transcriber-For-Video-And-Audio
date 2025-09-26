@@ -61,18 +61,24 @@ def check_media_type(file_path):
 def defaultCheck(jsonValue, userDefaults):
     # check if the value is inside
     if jsonValue in userDefaults or userDefaults[jsonValue]:
+        # best way to get a json value
         path = userDefaults.get(jsonValue)
         # tests to see if path returns None and a number
         if not path or not isinstance(path, str): # if path returns None, it is True, because None is falsy
             # return "path issue"
-            return "create key, value pair"
+            return {"location": "defaultCheck, path blank",
+                    "value":"create key, value pair"}
         # return f"{jsonValue} found"
-        return path
+        # return path
+        elif (os.path.exists(path) == True):
+            return {"location": "defaultCheck, key found, path valid", 
+                    "value": True}
+        else:
+            return {"location": "defaultCheck, key found, path not valid",
+                    "value": "create key, value pair"}
     else:
-        # best way to get a json value
+        return {"location": "defaultCheck, key not seen", "value":"create key, value pair"}
 
-        return "path does not exist"
-        # return os.path.exists(path)
 
 class Api:
     # load json file path
@@ -127,29 +133,47 @@ class Api:
                 return requestedValue
         except Exception as e:
             print(e)
-            return False
+            return {"location": "exception block",
+                    "value": "create key, value pair"}
 
 
     def chooseDefault(self, key):
-        file_path = filedialog.askopenfilename(
-            title=f"Choose {key}")
-        
-        if not file_path:
-            return None  # User canceled
-
-        # Load existing defaults (if file exists)
         try:
             with open(self.jsonPath, "r") as f:
                 data = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             data = {}
 
+        if (key == "model"):
+            self.model = filedialog.askopenfilename(
+                title=f"Choose {key}",
+                filetypes=[("{key} Files", "*.bin")]
+                )
+            data[key] = self.model
+
+        elif (key == "whisper"):
+            self.whisper = filedialog.askopenfilename(
+                title=f"Choose {key}",
+                filetypes=[("{key} Files", "*.exe")]
+                )
+            data[key] = self.whisper
+        # self.type = check_media_type(self.file_path)
+        # print(self.key)
+                # Load existing defaults (if file exists)
+
+
         #update with new section
-        data[key] = file_path
 
         with open(jsonPath, "w") as f:
             # handles formatting for JSON, no need to concen with escape \
             json.dump(data, f, indent=4)
+
+        return "updated"
+        # return self.file_path
+
+        # if not file_path:
+        #     return None  # User canceled
+
 
 
 
@@ -176,14 +200,24 @@ class Api:
         # PowerShell command to run a script
         print(f"passing ${self.file_path} to PowerShell script")
         print(f"media type: {self.type}")
+        try:
+            with open(self.jsonPath, "r") as f:
+                data = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {}
         
+        print(data["whisper"])
+        print(data["model"])
+
         cmd = [
             "powershell",   # or "pwsh" if using PowerShell Core
             "-ExecutionPolicy", "Bypass",  # allow script to run
             "-File",
             r"..\PowerShell\main.ps1",
             "-mediaFileObj", self.file_path,  # path to your script
-            "-mediaType", self.type
+            "-mediaType", self.type,
+            "-whisperExe", data["whisper"],
+            "-modelFile", data["model"]
         ]
         # cmd = [r".\main.ps1"]
 
