@@ -6,8 +6,6 @@ import subprocess
 from tkinter import filedialog
 import mimetypes
 
-# import loadUserDefaults
-
 
 # Check if dirs exist first, if not make them
     # Create folders if not made
@@ -27,58 +25,17 @@ import mimetypes
     # show upload button which gets local path of download and copies to .\2. models\
 
 
-# Load user defaults
-# check if user defaults file exists
-# if not, create blank
-# request user to set defaults
-# update user defaults file
-
 cwd = os.getcwd()
-print(cwd)
-print(os.path.basename(cwd))
-
 binPath = os.path.join(cwd, "1. bin")
 whisperPath = os.path.join(binPath, "whisper-cli.exe")
 
-print(whisperPath)
-
-
 jsonPath = "./userDefaults.json"
+print(cwd)
 
-def defaultCheck(jsonValue, userDefaults):
-    if jsonValue not in userDefaults or not userDefaults[jsonValue]:
-        print(f"set ${jsonValue}")
-        return f"set ${jsonValue}"
-    else:
-        print(userDefaults[jsonValue])
+jsonfile = os.path.join(cwd,jsonPath)
+print(jsonfile)
 
-
-
-def loadUserDefaults():
-    try:
-        if os.path.exists(jsonPath):
-            with open(jsonPath, "r") as f:
-                userDefaults = json.load(f)
-
-            defaultCheck("whisper", userDefaults)
-            defaultCheck("model", userDefaults)
-
-        else:
-            with open(jsonPath, "w") as f:
-                json.dump({
-                    "whisper": whisperPath,
-                    "model": ""
-            #         # "input_folder": "",
-            #         # "output_folder": ""
-                },f)
-            return None
-    except json.JSONDecodeError as e:
-        print(e)
-        
-        
-
-loadUserDefaults()
-
+print(os.path.exists(jsonfile))
 
 # recieve python arguments to see what user wants to do
 def check_media_type(file_path):
@@ -93,10 +50,109 @@ def check_media_type(file_path):
     return "unknown"
 
 
-# file_path = ''
+# Load user defaults
+# check if user defaults file exists
+# if not, create blank
+# request user to set defaults
+# update user defaults file
 
+# userDefault is the entire json
+# jsonValue is the key
+def defaultCheck(jsonValue, userDefaults):
+    # check if the value is inside
+    if jsonValue in userDefaults or userDefaults[jsonValue]:
+        path = userDefaults.get(jsonValue)
+        # tests to see if path returns None and a number
+        if not path or not isinstance(path, str): # if path returns None, it is True, because None is falsy
+            # return "path issue"
+            return "create key, value pair"
+        # return f"{jsonValue} found"
+        return path
+    else:
+        # best way to get a json value
+
+        return "path does not exist"
+        # return os.path.exists(path)
 
 class Api:
+    # load json file path
+    def __init__(self, jsonPath=jsonPath):
+        self.jsonPath = jsonPath
+
+    def loadUserDefaultsTest(self, jsonValue):
+        # jscwd = os.getcwd()
+        # return jscwd
+        # if (jsonValue == "banana"):
+        #     return f"yum ${jsonValue}"
+        # else:
+        #     return f"blah ${jsonValue}"
+        
+        # returns true
+        os.path.exists(self.jsonPath)
+        with open(self.jsonPath, "r") as f:
+            userDefaults = json.load(f)
+        requestedValue = defaultCheck(jsonValue, userDefaults)
+
+        return requestedValue
+
+
+
+    # this is intialized on js. js sends model and whisper test immediately on startup
+    def loadUserDefaults(self, jsonValue):
+        try:
+            # if there is a json file load it
+            if os.path.exists(self.jsonPath):
+                with open(self.jsonPath, "r") as f:
+                    # userDefault is the entire json
+                    # jsonValue is the key
+                    userDefaults = json.load(f)
+
+                # check value sent from json to see if it is present
+                print(userDefaults)
+                requestedValue = defaultCheck(jsonValue, userDefaults)
+                # return findings
+                return requestedValue
+
+            # if there is no json file, make one
+            else:
+                # create a template json for the user
+                userDefaults = {
+                        "whisper": whisperPath,
+                        "model": ""
+                    }
+                with open(self.jsonPath, "w") as f:
+                    json.dump(userDefaults,f)
+                requestedValue = defaultCheck(jsonValue, userDefaults)
+                # need to send a request to select model
+                return requestedValue
+        except Exception as e:
+            print(e)
+            return False
+
+
+    def chooseDefault(self, key):
+        file_path = filedialog.askopenfilename(
+            title=f"Choose {key}")
+        
+        if not file_path:
+            return None  # User canceled
+
+        # Load existing defaults (if file exists)
+        try:
+            with open(self.jsonPath, "r") as f:
+                data = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {}
+
+        #update with new section
+        data[key] = file_path
+
+        with open(jsonPath, "w") as f:
+            # handles formatting for JSON, no need to concen with escape \
+            json.dump(data, f, indent=4)
+
+
+
     def selectFile(self):
         self.file_path = filedialog.askopenfilename(
             title="Choose a media file",
@@ -108,25 +164,10 @@ class Api:
         print(self.type)
 
         return self.file_path
-
-    def transcribe_file(self, name, data):
-        print("✅ Transcription requested for:", name)
-        # transcription = transcribe(audio_path)
-        # if transcription:
-        #     print("Transcription:", transcription)
-        # else:
-        #     print("Transcription failed.")
-
-    def print_file_path(self):
-        print(self.file_path)
-        return self.file_path
-
+    
 
     def transcribe(self):
         # Build the command
-        # cmd = ['path/to/whisper-cli.exe', audio_file_path]
-
-        # cmd = [self.file_path,  capture_output=True, text=True]
         # cmd = ["echo", "Hello, World!"]  # Example command, replace with actual command
 
         # good example of reg cmd
@@ -146,7 +187,6 @@ class Api:
         ]
         # cmd = [r".\main.ps1"]
 
-
         # Run the command and capture output
         result = subprocess.run(cmd, capture_output=True, text=True)
 
@@ -161,6 +201,10 @@ class Api:
             print("Error:", result.stderr)
             return None
 
+#  need to initialize api before debugging
+api = Api(jsonPath)
+# print(Api.loadUserDefaults(api, "model"))
+print(Api.loadUserDefaults(api, "whisper")) # returns true, debug looks in project folder, not src
 
 def resource_path(relative_path):
     """ Get the absolute path to a resource, works for dev and for PyInstaller """
@@ -171,14 +215,15 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
-html_file = resource_path("index.html")
-css_file = resource_path("assets/style.css")
-js_file = resource_path("assets/script.js")
+# html_file = resource_path("index.html")
+# css_file = resource_path("assets/style.css")
+# js_file = resource_path("assets/script.js")
 
 
-# html_file = resource_path(r'..\frontend\index.html')
-# css_file = resource_path(r'..\frontend\assets\style.css')
-# js_file = resource_path(r'..\frontend\assets\script.js')
+# enable for debugging
+html_file = resource_path(r'..\frontend\index.html')
+css_file = resource_path(r'..\frontend\assets\style.css')
+js_file = resource_path(r'..\frontend\assets\script.js')
 
 
 if __name__ == '__main__':
