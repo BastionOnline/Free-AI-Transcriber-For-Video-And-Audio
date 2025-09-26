@@ -9,3 +9,5 @@ git remote set-url origin https://github.com/BastionOnline/Free-AI-Transcriber-F
 
 compile using auto-py-to-exe
 pyinstaller --noconfirm --onedir --windowed --icon "C:\My Stuff\1. Work\1. Coding\Transcript App\Whisper - C\requirements\executable\icon\favicon (5).ico" --name "Media Transcriber - Sept 25, 2025" --add-data "C:\My Stuff\1. Work\1. Coding\Transcript App\Whisper - C\Python\frontend\index.html;." --add-data "C:\My Stuff\1. Work\1. Coding\Transcript App\Whisper - C\Python\frontend\assets;assets/"  "C:\My Stuff\1. Work\1. Coding\Transcript App\Whisper - C\Python\src\main.py"
+
+need to include json file in main dir, likely with index.html

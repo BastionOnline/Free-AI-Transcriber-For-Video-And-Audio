@@ -1,5 +1,4 @@
 param(
-
     [System.IO.FileInfo]$audioFile,
     [string]$timeStamp,
     [string]$mediaPathOnly,
@@ -20,7 +19,7 @@ Write-Host "Audio Name: $wavName"
 # $WhisperExe = "..\..\1. bin\whisper-cli.exe"
 # $ModelFile = "..\..\2. models\ggml-base.en.bin"
 # $OutputDir = "..\..\4. Output\$wavName - Transcribed $TimeStamp"
-$outputDir = "$mediaPath\$wavName - Transcribed $timeStamp"
+$outputDir = "$mediaPathOnly\$wavName - Transcribed $timeStamp"
 
 Write-Host "Transcribing file: $wavNameAndExt"
 # run whisper-cli or ffmpeg here with $InputFile
@@ -38,3 +37,5 @@ $Content = Get-Content "$outputDir.txt"
 
 # Write header + content to the same file
 Set-Content "$outputDir.txt" ($headerLine + ($Content -join "`r`n"))
+
+# Write-Output $mediaPathOnly

@@ -1,15 +1,13 @@
 # run with .\main.ps1
-
 param(
-
-    [string]$mediaFileObj = "",
-    [string]$mediaType,  # Default value for the parameter
+    [string]$mediaFileObj,
+    [string]$mediaType,
     [string]$whisperExe,
     [string]$modelFile
-    # testing
-    # [string]$mediaFileObj = "..\..\3. Input\2025-08-23 19-43-36.mkv",
-    # [string]$mediaType = "video"
 )
+
+# $WhisperExe = "..\..\1. bin\whisper-cli.exe"
+# $ModelFile = "..\..\2. models\ggml-base.en.bin"
 
 # $WhisperExe = "..\..\1. bin\whisper-cli.exe"
 # $ModelFile = "..\..\2. models\ggml-base.en.bin"
