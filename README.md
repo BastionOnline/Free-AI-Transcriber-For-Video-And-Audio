@@ -33,4 +33,4 @@ You can adjust model settings in config.yaml to balance speed and accuracy:
 model_size: tiny, base, small, medium, or large.
 
 🤝 Contributing
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change. Check out the GitHub Flow guide if you're new to contributing.
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
