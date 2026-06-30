@@ -16,23 +16,20 @@ A lightweight, efficient tool that converts audio and video files into clean tex
 ## Installation
 
 ### 1. Clone the repository
-```
-bash
+```bash
 git clone https://github.com
 cd ai-transcriber
 ```
 
 ### 2. Install dependencies:
 Make sure you have Python installed.
-```
-bash
+```bash
 pip install -r requirements.txt
 ```
 
 ### 3. Install FFmpeg:
-```
 Required for processing media files. Follow the FFmpeg Download Guide for your OS.
-```
+
 
 ## Usage
 1. Add your audio or video file (MP4, MOV, AVI, MP3, WAV, or M4A).
