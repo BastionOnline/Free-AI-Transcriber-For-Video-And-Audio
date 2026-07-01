@@ -18,7 +18,6 @@ A lightweight, efficient tool that converts audio and video files into clean tex
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/BastionOnline/Free-AI-Transcriber-For-Video-And-Audio.git
-cd ai-transcriber
 ```
 
 ### 2. Install dependencies:
